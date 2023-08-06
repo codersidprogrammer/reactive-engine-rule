@@ -103,8 +103,8 @@ const unitRule: Rules<Employee> = {
 
 const engine = new EngineRule<Employee>();
 engine
-  .setTestValue(test)
-  .setRules(0, personalNumberRule)
+  .setTestValue(test) // Set value tobe tested
   .setRules(1, unitRule)
+  .setRules(0, personalNumberRule)
   .build()
   .subscribe();

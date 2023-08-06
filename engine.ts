@@ -2,14 +2,24 @@ import { JSONPath } from 'jsonpath-plus';
 import {
   catchError,
   from,
+  interval,
   Observable,
   of,
   share,
+  skip,
   switchMap,
+  takeWhile,
   tap,
+  throwError,
   zip,
 } from 'rxjs';
-import { EventType, Relation, Rules, RulesCondition } from './rules.interface';
+import {
+  ActionType,
+  EventType,
+  Relation,
+  Rules,
+  RulesCondition,
+} from './rules.interface';
 
 declare global {
   interface Array<T> {
@@ -125,8 +135,12 @@ export class EngineRule<T extends object> {
     this._conditionString = [];
   }
 
+  private sortedRules(): RulesMap<T>[] {
+    return this.rules.sort((a, b) => a.order - b.order);
+  }
+
   build(): Observable<string | RulesMap<T>> {
-    return from(this.rules).pipe(
+    return from(this.sortedRules()).pipe(
       tap((val) => console.warn(`Rule name: ${val.rules.name}`)),
       tap((val) => console.log(`Fact desc: ${val.rules.condition.fact}`)),
       switchMap((val) => {
@@ -146,6 +160,16 @@ export class EngineRule<T extends object> {
           .first();
 
         if (_ruleCheck) {
+          // Finding END
+          val.rules.on.forEach((o) => {
+            if (
+              o.event === EventType.SUCCESS &&
+              o.action.type === ActionType.END
+            ) {
+              console.log('END');
+              throw new Error('It was end');
+            }
+          });
           actSuccess.action.call(val);
         } else {
           actFailed.action.call(val);
