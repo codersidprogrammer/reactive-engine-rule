@@ -79,7 +79,7 @@ const unitRule: Rules<Employee> = {
   condition: {
     fact: 'Should handle by TDO',
     operator: Operator.EQUAL,
-    expectedValue: 'TDO', // Change this to TDI, so make it come true
+    expectedValue: 'TDI', // Change this to TDI, so make it come true
     path: '$.personalUnit',
   },
   on: [

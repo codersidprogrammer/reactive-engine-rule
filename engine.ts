@@ -66,12 +66,7 @@ export class EngineRule<T extends object> {
     return this;
   }
 
-  private conditionGenerator(
-    order: number,
-    _var: any,
-    opr: any,
-    exp: any
-  ): string {
+  private conditionGenerator(_var: any, opr: any, exp: any): string {
     let s = '(';
     s += typeof _var === 'string' ? `"${_var}"` : _var;
     s += opr;
@@ -98,7 +93,6 @@ export class EngineRule<T extends object> {
     const relations = rule.condition.relation;
 
     const domainCondition = this.conditionGenerator(
-      order,
       JSONPath({
         path: rule.condition.path,
         json: this.testValue,
@@ -114,7 +108,6 @@ export class EngineRule<T extends object> {
           const relationCondition = v as unknown as RulesCondition<T>;
           this._conditionString.push(this.relationOperatorTranslator(val));
           const relationConditionCode = this.conditionGenerator(
-            order,
             JSONPath({
               path: relationCondition.path.toString(),
               json: this.testValue,
