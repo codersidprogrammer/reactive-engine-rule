@@ -40,7 +40,7 @@ const personalNumberRule: Rules<Employee> = {
           expectedValue: 'Asep saipudin',
         },
         {
-          fact: 'Name check',
+          fact: 'Unit check',
           operator: Operator.EQUAL,
           path: '$.personalUnit',
           expectedValue: 'TDI',
@@ -78,7 +78,7 @@ const unitRule: Rules<Employee> = {
   condition: {
     fact: 'Should handle by TDO',
     operator: Operator.EQUAL,
-    expectedValue: 'TDI',
+    expectedValue: 'TDO', // Change this to TDI, so make it come true
     path: '$.personalUnit',
   },
   on: [

@@ -7,7 +7,7 @@ export enum Operator {
   LT = '<',
 }
 
-export type Relation = 'AND' | 'OR' | 'NOT';
+export type Relation = 'AND' | 'OR';
 
 export enum EventType {
   SUCCESS,
