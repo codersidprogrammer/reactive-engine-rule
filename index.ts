@@ -5,30 +5,19 @@ import { ActionType, EventType, Operator, Rules } from './rules.interface';
 export interface Employee {
   personalNumber: string;
   personalName: string;
-  personalTitle: string;
-  personalEmail: string;
   personalUnit: string;
-  personalImage: string;
   personalSuperior: Employee | null;
   isGmfEmployee: boolean;
 }
 
 const test: Employee = {
-  personalNumber: '531956',
-  personalName: 'Balugu Gomo Sibagariang',
-  personalTitle: 'SM Innovation & Digital Transformation',
-  personalEmail: '531956@gmf-aeroasia.co.id',
+  personalNumber: '800000',
+  personalName: 'Asep saipudin',
   personalUnit: 'TDI',
-  personalImage:
-    'https://talentlead.gmf-aeroasia.co.id/images/avatar/531956.jpg',
   personalSuperior: {
-    personalNumber: '782774',
-    personalName: 'Irvan Pribadi',
-    personalTitle: 'Director Of Base Operation',
-    personalEmail: '782774@gmf-aeroasia.co.id',
+    personalNumber: '800001',
+    personalName: 'Mochammad Dimas Editiya',
     personalUnit: 'DB',
-    personalImage:
-      'https://talentlead.gmf-aeroasia.co.id/images/avatar/782774.jpg',
     personalSuperior: null,
     isGmfEmployee: true,
   },
@@ -38,24 +27,21 @@ const test: Employee = {
 const personalNumberRule: Rules<Employee> = {
   name: 'Employee validation',
   condition: {
-    fact: 'Personal number should be 531956',
+    fact: 'Personal number should be 800000',
     operator: Operator.EQUAL,
-    field: 'personalNumber',
-    expectedValue: '531956',
+    expectedValue: '800000',
     path: '$.personalNumber',
     relation: {
       AND: [
         {
           fact: 'Name check',
           operator: Operator.EQUAL,
-          field: 'personalName',
           path: '$.personalName',
-          expectedValue: 'Balugu Gomo Sibagariang',
+          expectedValue: 'Asep saipudin',
         },
         {
           fact: 'Name check',
           operator: Operator.EQUAL,
-          field: 'personalUnit',
           path: '$.personalUnit',
           expectedValue: 'TDI',
         },
@@ -70,9 +56,9 @@ const personalNumberRule: Rules<Employee> = {
         message: 'Approved',
         call: (val) => {
           console.log(val);
-          fetch(
-            'https://talentlead.gmf-aeroasia.co.id/images/avatar/782774.jpg'
-          ).then((res) => console.log(res));
+          fetch('https://dummyjson.com/products/1').then((res) =>
+            console.log(res)
+          );
         },
       },
     },
@@ -92,7 +78,6 @@ const unitRule: Rules<Employee> = {
   condition: {
     fact: 'Should handle by TDO',
     operator: Operator.EQUAL,
-    field: 'personalUnit',
     expectedValue: 'TDI',
     path: '$.personalUnit',
   },

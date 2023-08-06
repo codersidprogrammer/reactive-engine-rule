@@ -21,12 +21,40 @@ export enum ActionType {
   END,
 }
 
+/**
+ * Describing rules for each process.
+ * Define your needs about rules here.
+ *
+ */
 export interface RulesCondition<T> {
+  /**
+   * Descriptions of fact
+   */
   fact: string;
-  field: keyof T;
-  path?: string;
+
+  /**
+   * Path of json notated by dot [.]
+   *
+   * See on https://www.npmjs.com/package/jsonpath-plus
+   */
+  path: string;
+
+  /**
+   * Operator for boolean operations
+   *
+   */
   operator: Operator;
+
+  /**
+   * Value that should be expected on test
+   *
+   */
   expectedValue: string | number;
+
+  /**
+   * Use this to make boolean logic relation
+   *
+   */
   relation?: { [K in Relation]?: RulesCondition<T>[] };
 }
 
