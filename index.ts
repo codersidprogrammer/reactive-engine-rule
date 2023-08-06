@@ -14,7 +14,7 @@ export interface Employee {
 }
 
 const test: Employee = {
-  personalNumber: '531955',
+  personalNumber: '531956',
   personalName: 'Balugu Gomo Sibagariang',
   personalTitle: 'SM Innovation & Digital Transformation',
   personalEmail: '531956@gmf-aeroasia.co.id',
@@ -70,6 +70,9 @@ const personalNumberRule: Rules<Employee> = {
         message: 'Approved',
         call: (val) => {
           console.log(val);
+          fetch(
+            'https://talentlead.gmf-aeroasia.co.id/images/avatar/782774.jpg'
+          ).then((res) => console.log(res));
         },
       },
     },
@@ -90,7 +93,7 @@ const unitRule: Rules<Employee> = {
     fact: 'Should handle by TDO',
     operator: Operator.EQUAL,
     field: 'personalUnit',
-    expectedValue: 'TDO',
+    expectedValue: 'TDI',
     path: '$.personalUnit',
   },
   on: [

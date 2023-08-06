@@ -1,5 +1,14 @@
 import { JSONPath } from 'jsonpath-plus';
-import { catchError, from, of, share, switchMap, tap, zip } from 'rxjs';
+import {
+  catchError,
+  from,
+  Observable,
+  of,
+  share,
+  switchMap,
+  tap,
+  zip,
+} from 'rxjs';
 import { EventType, Relation, Rules, RulesCondition } from './rules.interface';
 
 declare global {
@@ -34,12 +43,12 @@ export class EngineRule<T extends object> {
 
   constructor() {}
 
-  setTestValue(val: T) {
+  setTestValue(val: T): this {
     this.testValue = val;
     return this;
   }
 
-  setRules(order: number, rule: Rules<T>) {
+  setRules(order: number, rule: Rules<T>): this {
     this.rules.push({
       order: order,
       rules: rule,
@@ -47,7 +56,12 @@ export class EngineRule<T extends object> {
     return this;
   }
 
-  private conditionGenerator(order: number, _var: any, opr: any, exp: any) {
+  private conditionGenerator(
+    order: number,
+    _var: any,
+    opr: any,
+    exp: any
+  ): string {
     let s = '(';
     s += typeof _var === 'string' ? `"${_var}"` : _var;
     s += opr;
@@ -57,7 +71,7 @@ export class EngineRule<T extends object> {
     return s;
   }
 
-  private relationOperatorTranslator(op: string) {
+  private relationOperatorTranslator(op: string): string | null {
     switch (op) {
       case 'AND':
         this._conditionString.push('&&');
@@ -70,7 +84,7 @@ export class EngineRule<T extends object> {
     }
   }
 
-  private conditionCheck(order: number, rule: Rules<T>) {
+  private conditionCheck(order: number, rule: Rules<T>): void {
     const relations = rule.condition.relation;
 
     const domainCondition = this.conditionGenerator(
@@ -111,7 +125,7 @@ export class EngineRule<T extends object> {
     this._conditionString = [];
   }
 
-  build() {
+  build(): Observable<string | RulesMap<T>> {
     return from(this.rules).pipe(
       tap((val) => console.warn(`Rule name: ${val.rules.name}`)),
       tap((val) => console.log(`Fact desc: ${val.rules.condition.fact}`)),
@@ -132,8 +146,9 @@ export class EngineRule<T extends object> {
           .first();
 
         if (_ruleCheck) {
-          actSuccess.action.call(actSuccess.action.message);
+          actSuccess.action.call(val);
         } else {
+          actFailed.action.call(val);
           throw new Error(actFailed.action.message);
         }
 
