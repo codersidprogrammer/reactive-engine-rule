@@ -2,21 +2,16 @@ import { JSONPath } from 'jsonpath-plus';
 import {
   catchError,
   from,
-  interval,
   Observable,
   of,
   share,
-  skip,
   switchMap,
-  takeWhile,
   tap,
-  throwError,
   zip,
 } from 'rxjs';
 import {
   ActionType,
   EventType,
-  Relation,
   Rules,
   RulesCondition,
 } from './rules.interface';
