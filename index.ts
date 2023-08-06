@@ -1,4 +1,5 @@
 // Import stylesheets
+import { lastValueFrom } from 'rxjs';
 import { EngineRule } from './engine';
 import { ActionType, EventType, Operator, Rules } from './rules.interface';
 
@@ -101,10 +102,19 @@ const unitRule: Rules<Employee> = {
   ],
 };
 
-const engine = new EngineRule<Employee>();
-engine
+const engine = new EngineRule<Employee>()
   .setTestValue(test) // Set value tobe tested
   .setRules(1, unitRule)
   .setRules(0, personalNumberRule)
-  .build()
-  .subscribe();
+  .build();
+
+/**
+ * Debugging main
+ *
+ **/
+async function main() {
+  const r = await lastValueFrom(engine);
+  console.log(r);
+}
+
+main();
